@@ -4,7 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reservation/entities/reservation.dart';
 import 'package:reservation/pages/calendar_page/select_day_provider.dart';
-import 'package:reservation/pages/widgets/dialog.dart';
+import 'package:reservation/pages/reserve_page/reserve_page.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarPage extends HookConsumerWidget {
@@ -104,19 +104,11 @@ class CalendarPage extends HookConsumerWidget {
                                       selectedDay.month,
                                       selectedDay.day))] ==
                                   true) {
-                            await showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return selectDialog(
-                                      context: context,
-                                      onTapOK: () {
-                                        //TODO: add data 2 firestore
-                                      },
-                                      onTapCancel: () {
-                                        Navigator.pop(context);
-                                      },
-                                      message: '予約しますか？');
-                                });
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ReservePage(date: selectedDay)));
                           }
                         },
                         onPageChanged: (focusedDay) {
