@@ -4,5 +4,5 @@ part 'select_day_state.freezed.dart';
 
 @freezed
 class SelectDayState with _$SelectDayState {
-  const factory SelectDayState({selectedDay, focusDay}) = _SelectDayState;
+  const factory SelectDayState({selectedDay}) = _SelectDayState;
 }

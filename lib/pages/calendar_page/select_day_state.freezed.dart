@@ -17,10 +17,9 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$SelectDayStateTearOff {
   const _$SelectDayStateTearOff();
 
-  _SelectDayState call({dynamic selectedDay, dynamic focusDay}) {
+  _SelectDayState call({dynamic selectedDay}) {
     return _SelectDayState(
       selectedDay: selectedDay,
-      focusDay: focusDay,
     );
   }
 }
@@ -31,7 +30,6 @@ const $SelectDayState = _$SelectDayStateTearOff();
 /// @nodoc
 mixin _$SelectDayState {
   dynamic get selectedDay => throw _privateConstructorUsedError;
-  dynamic get focusDay => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $SelectDayStateCopyWith<SelectDayState> get copyWith =>
@@ -43,7 +41,7 @@ abstract class $SelectDayStateCopyWith<$Res> {
   factory $SelectDayStateCopyWith(
           SelectDayState value, $Res Function(SelectDayState) then) =
       _$SelectDayStateCopyWithImpl<$Res>;
-  $Res call({dynamic selectedDay, dynamic focusDay});
+  $Res call({dynamic selectedDay});
 }
 
 /// @nodoc
@@ -58,16 +56,11 @@ class _$SelectDayStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? selectedDay = freezed,
-    Object? focusDay = freezed,
   }) {
     return _then(_value.copyWith(
       selectedDay: selectedDay == freezed
           ? _value.selectedDay
           : selectedDay // ignore: cast_nullable_to_non_nullable
-              as dynamic,
-      focusDay: focusDay == freezed
-          ? _value.focusDay
-          : focusDay // ignore: cast_nullable_to_non_nullable
               as dynamic,
     ));
   }
@@ -80,7 +73,7 @@ abstract class _$SelectDayStateCopyWith<$Res>
           _SelectDayState value, $Res Function(_SelectDayState) then) =
       __$SelectDayStateCopyWithImpl<$Res>;
   @override
-  $Res call({dynamic selectedDay, dynamic focusDay});
+  $Res call({dynamic selectedDay});
 }
 
 /// @nodoc
@@ -97,11 +90,9 @@ class __$SelectDayStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? selectedDay = freezed,
-    Object? focusDay = freezed,
   }) {
     return _then(_SelectDayState(
       selectedDay: selectedDay == freezed ? _value.selectedDay : selectedDay,
-      focusDay: focusDay == freezed ? _value.focusDay : focusDay,
     ));
   }
 }
@@ -109,16 +100,14 @@ class __$SelectDayStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_SelectDayState implements _SelectDayState {
-  const _$_SelectDayState({this.selectedDay, this.focusDay});
+  const _$_SelectDayState({this.selectedDay});
 
   @override
   final dynamic selectedDay;
-  @override
-  final dynamic focusDay;
 
   @override
   String toString() {
-    return 'SelectDayState(selectedDay: $selectedDay, focusDay: $focusDay)';
+    return 'SelectDayState(selectedDay: $selectedDay)';
   }
 
   @override
@@ -127,15 +116,12 @@ class _$_SelectDayState implements _SelectDayState {
         (other.runtimeType == runtimeType &&
             other is _SelectDayState &&
             const DeepCollectionEquality()
-                .equals(other.selectedDay, selectedDay) &&
-            const DeepCollectionEquality().equals(other.focusDay, focusDay));
+                .equals(other.selectedDay, selectedDay));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(selectedDay),
-      const DeepCollectionEquality().hash(focusDay));
+      runtimeType, const DeepCollectionEquality().hash(selectedDay));
 
   @JsonKey(ignore: true)
   @override
@@ -144,13 +130,10 @@ class _$_SelectDayState implements _SelectDayState {
 }
 
 abstract class _SelectDayState implements SelectDayState {
-  const factory _SelectDayState({dynamic selectedDay, dynamic focusDay}) =
-      _$_SelectDayState;
+  const factory _SelectDayState({dynamic selectedDay}) = _$_SelectDayState;
 
   @override
   dynamic get selectedDay;
-  @override
-  dynamic get focusDay;
   @override
   @JsonKey(ignore: true)
   _$SelectDayStateCopyWith<_SelectDayState> get copyWith =>
