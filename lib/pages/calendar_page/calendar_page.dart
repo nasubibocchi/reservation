@@ -79,8 +79,6 @@ class CalendarPage extends HookConsumerWidget {
                                         '○',
                                         style: TextStyle(color: Colors.black54),
                                       ),
-                                // dateList.contains(days) &&
-                                // Text(reservation.map((e) => e.date == _selectedDay ? e.canBeReserved == true ? '○' : '×')),
                               ],
                             );
                           },
