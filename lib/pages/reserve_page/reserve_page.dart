@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:reservation/pages/reserve_page/reserve_functions.dart';
 import 'package:reservation/pages/widgets/appbar.dart';
 import 'package:reservation/pages/widgets/dialog.dart';
 
@@ -14,6 +15,8 @@ class ReservePage extends StatelessWidget {
     final nameController = TextEditingController(text: name);
     nameController.selection = TextSelection.fromPosition(
         TextPosition(offset: nameController.text.length));
+
+    final reserveFunctions = ReserveFunctions();
 
     return Scaffold(
       appBar: GradientAppBar(
@@ -55,19 +58,33 @@ class ReservePage extends StatelessWidget {
           const SizedBox(height: 20.0),
           ElevatedButton(
             onPressed: () async {
-              await showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return selectDialog(
-                        context: context,
-                        onTapOK: () {
-                          //TODO: add data 2 firestore
-                        },
-                        onTapCancel: () {
-                          Navigator.pop(context);
-                        },
-                        message: '予約しますか？');
-                  });
+              if (name == '') {
+                await showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return okDialog(
+                          context: context,
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          message: '名前を入力してください。');
+                    });
+              } else {
+                await showDialog(
+                    context: context,
+                    builder: (context) {
+                      return selectDialog(
+                          context: context,
+                          onTapOK: () async {
+                            reserveFunctions.makeReservation(
+                                context: context, date: date, name: name);
+                          },
+                          onTapCancel: () {
+                            Navigator.pop(context);
+                          },
+                          message: '予約しますか？');
+                    });
+              }
             },
             child: const Text('予約する',
                 style: TextStyle(color: Colors.black54, fontSize: 16.0)),
