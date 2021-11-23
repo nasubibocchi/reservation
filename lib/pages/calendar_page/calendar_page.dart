@@ -1,19 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reservation/entities/reservation.dart';
-import 'package:reservation/pages/calendar_page/select_day_provider.dart';
+import 'package:reservation/pages/calendar_page/selected_day/select_day_provider.dart';
 import 'package:reservation/pages/reserve_page/reserve_page.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import 'focused_day/focused_day_provider.dart';
+
 class CalendarPage extends HookConsumerWidget {
-  DateTime _focusedDay = DateTime.now();
+  final today = DateTime.now();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final firestore = FirebaseFirestore.instance;
     final _selectedDay = ref.watch(selectDayProvider).selectedDay;
+
+    useEffect(() {
+      ref.read(focusedDayProvider.notifier).changeFocusedDay(today);
+    }, const []);
+    final _focusedDay = ref.watch(focusedDayProvider).focusedDay;
 
     String selectedYearMonth =
         _focusedDay.year.toString() + '-' + _focusedDay.month.toString();
@@ -82,6 +90,51 @@ class CalendarPage extends HookConsumerWidget {
                               ],
                             );
                           },
+                          selectedBuilder:
+                              (BuildContext context, days, focusDay) {
+                            return Stack(
+                              children: [
+                                Center(
+                                  child: Container(
+                                    height: 50.0,
+                                    width: 30.0,
+                                    decoration: BoxDecoration(
+                                      color: Colors.deepOrangeAccent,
+                                      shape: BoxShape.rectangle,
+                                      borderRadius: BorderRadius.circular(5.0),
+                                    ),
+                                  ),
+                                ),
+                                Center(
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(focusDay.day.toString()),
+                                      ),
+                                      dateList.contains(DateTime(focusDay.year,
+                                              focusDay.month, focusDay.day))
+                                          ? Text(
+                                              reserveNotifierList[
+                                                      dateList.indexOf(DateTime(
+                                                          focusDay.year,
+                                                          focusDay.month,
+                                                          focusDay.day))]
+                                                  .toString(),
+                                              style: const TextStyle(
+                                                  color: Colors.white),
+                                            )
+                                          : const Text(
+                                              '○',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
                         ),
                         focusedDay: _focusedDay,
                         firstDay: DateTime(2020, 1, 1),
@@ -92,8 +145,11 @@ class CalendarPage extends HookConsumerWidget {
                         onDaySelected: (selectedDay, focusDay) async {
                           ref
                               .read(selectDayProvider.notifier)
-                              .selectDay(selectedDay);
-                          _focusedDay = focusDay;
+                              .changeSelectDay(selectedDay);
+
+                          ref
+                              .read(focusedDayProvider.notifier)
+                              .changeFocusedDay(focusDay);
 
                           if (!dateList.contains(DateTime(selectedDay.year,
                                   selectedDay.month, selectedDay.day)) ||
@@ -110,7 +166,9 @@ class CalendarPage extends HookConsumerWidget {
                           }
                         },
                         onPageChanged: (focusedDay) {
-                          _focusedDay = focusedDay;
+                          ref
+                              .read(focusedDayProvider.notifier)
+                              .changeFocusedDay(focusedDay);
                         },
                         headerStyle: HeaderStyle(
                           headerMargin: const EdgeInsets.symmetric(
@@ -130,9 +188,9 @@ class CalendarPage extends HookConsumerWidget {
                           todayDecoration: BoxDecoration(
                               color: Colors.red.shade200,
                               shape: BoxShape.circle),
-                          selectedDecoration: BoxDecoration(
-                              color: Colors.red.shade500,
-                              shape: BoxShape.circle),
+                          // selectedDecoration: BoxDecoration(
+                          //     color: Colors.red.shade500,
+                          //     shape: BoxShape.circle),
                         ),
                       ),
                     ),
