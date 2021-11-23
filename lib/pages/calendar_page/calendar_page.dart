@@ -64,45 +64,50 @@ class CalendarPage extends HookConsumerWidget {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TableCalendar(
+                        daysOfWeekHeight: 40.0,
+                        rowHeight: 72.0,
                         calendarBuilders: CalendarBuilders(
                           defaultBuilder:
-                              (BuildContext context, days, focusDay) {
+                              (BuildContext context, days, focusedDay) {
                             return Column(
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(days.day.toString()),
                                 ),
-                                dateList.contains(DateTime(
-                                        days.year, days.month, days.day))
+                                dateList.contains(
+                                  DateTime(days.year, days.month, days.day),
+                                )
                                     ? Text(
                                         reserveNotifierList[dateList.indexOf(
-                                                DateTime(days.year, days.month,
-                                                    days.day))]
+                                          DateTime(
+                                              days.year, days.month, days.day),
+                                        )]
                                             .toString(),
                                         style: const TextStyle(
-                                            color: Colors.black54),
+                                          color: Colors.black54,
+                                        ),
                                       )
                                     : const Text(
                                         '○',
                                         style: TextStyle(color: Colors.black54),
                                       ),
+                                const SizedBox(height: 10.0),
                               ],
                             );
                           },
                           selectedBuilder:
-                              (BuildContext context, days, focusDay) {
+                              (BuildContext context, days, focusedDay) {
                             return Stack(
+                              alignment: AlignmentDirectional.topCenter,
                               children: [
-                                Center(
-                                  child: Container(
-                                    height: 50.0,
-                                    width: 30.0,
-                                    decoration: BoxDecoration(
-                                      color: Colors.deepOrangeAccent,
-                                      shape: BoxShape.rectangle,
-                                      borderRadius: BorderRadius.circular(5.0),
-                                    ),
+                                Container(
+                                  height: 56.0,
+                                  width: 35.0,
+                                  decoration: BoxDecoration(
+                                    color: Colors.deepOrangeAccent.withOpacity(0.4),
+                                    shape: BoxShape.rectangle,
+                                    borderRadius: BorderRadius.circular(5.0),
                                   ),
                                 ),
                                 Center(
@@ -110,25 +115,36 @@ class CalendarPage extends HookConsumerWidget {
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: Text(focusDay.day.toString()),
+                                        child: Text(
+                                          focusedDay.day.toString(),
+                                          style: const TextStyle(
+                                              color: Colors.black54),
+                                        ),
                                       ),
-                                      dateList.contains(DateTime(focusDay.year,
-                                              focusDay.month, focusDay.day))
+                                      dateList.contains(DateTime(
+                                              focusedDay.year,
+                                              focusedDay.month,
+                                              focusedDay.day))
                                           ? Text(
                                               reserveNotifierList[
-                                                      dateList.indexOf(DateTime(
-                                                          focusDay.year,
-                                                          focusDay.month,
-                                                          focusDay.day))]
+                                                      dateList.indexOf(
+                                                DateTime(
+                                                    focusedDay.year,
+                                                    focusedDay.month,
+                                                    focusedDay.day),
+                                              )]
                                                   .toString(),
                                               style: const TextStyle(
-                                                  color: Colors.white),
+                                                color: Colors.black54,
+                                              ),
                                             )
                                           : const Text(
                                               '○',
                                               style: TextStyle(
-                                                  color: Colors.white),
+                                                color: Colors.black54,
+                                              ),
                                             ),
+                                      const SizedBox(height: 10.0),
                                     ],
                                   ),
                                 ),
@@ -188,9 +204,6 @@ class CalendarPage extends HookConsumerWidget {
                           todayDecoration: BoxDecoration(
                               color: Colors.red.shade200,
                               shape: BoxShape.circle),
-                          // selectedDecoration: BoxDecoration(
-                          //     color: Colors.red.shade500,
-                          //     shape: BoxShape.circle),
                         ),
                       ),
                     ),
