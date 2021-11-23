@@ -5,6 +5,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reservation/entities/reservation.dart';
 import 'package:reservation/pages/calendar_page/selected_day/select_day_provider.dart';
+import 'package:reservation/pages/calendar_page/widgets/default_builder_widget.dart';
+import 'package:reservation/pages/calendar_page/widgets/selected_builder_widget.dart';
+import 'package:reservation/pages/calendar_page/widgets/today_builder_widget.dart';
 import 'package:reservation/pages/reserve_page/reserve_page.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -41,10 +44,6 @@ class CalendarPage extends HookConsumerWidget {
                 child: CircularProgressIndicator(
                     color: Theme.of(context).primaryColor),
               );
-            } else if (snapshot.data!.docs.isEmpty) {
-              return const Center(
-                child: SizedBox(),
-              );
             } else {
               final reservation =
                   snapshot.data!.docs.map((e) => Reservation(e));
@@ -64,80 +63,33 @@ class CalendarPage extends HookConsumerWidget {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TableCalendar(
+                        daysOfWeekHeight: 40.0,
+                        rowHeight: 72.0,
                         calendarBuilders: CalendarBuilders(
                           defaultBuilder:
-                              (BuildContext context, days, focusDay) {
-                            return Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(days.day.toString()),
-                                ),
-                                dateList.contains(DateTime(
-                                        days.year, days.month, days.day))
-                                    ? Text(
-                                        reserveNotifierList[dateList.indexOf(
-                                                DateTime(days.year, days.month,
-                                                    days.day))]
-                                            .toString(),
-                                        style: const TextStyle(
-                                            color: Colors.black54),
-                                      )
-                                    : const Text(
-                                        '○',
-                                        style: TextStyle(color: Colors.black54),
-                                      ),
-                              ],
+                              (BuildContext context, days, focusedDay) {
+                            return DefaultBuilderWidget(
+                              days: days,
+                              dateList: dateList,
+                              reserveNotifierList: reserveNotifierList,
                             );
                           },
                           selectedBuilder:
-                              (BuildContext context, days, focusDay) {
-                            return Stack(
-                              children: [
-                                Center(
-                                  child: Container(
-                                    height: 50.0,
-                                    width: 30.0,
-                                    decoration: BoxDecoration(
-                                      color: Colors.deepOrangeAccent,
-                                      shape: BoxShape.rectangle,
-                                      borderRadius: BorderRadius.circular(5.0),
-                                    ),
-                                  ),
-                                ),
-                                Center(
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(focusDay.day.toString()),
-                                      ),
-                                      dateList.contains(DateTime(focusDay.year,
-                                              focusDay.month, focusDay.day))
-                                          ? Text(
-                                              reserveNotifierList[
-                                                      dateList.indexOf(DateTime(
-                                                          focusDay.year,
-                                                          focusDay.month,
-                                                          focusDay.day))]
-                                                  .toString(),
-                                              style: const TextStyle(
-                                                  color: Colors.white),
-                                            )
-                                          : const Text(
-                                              '○',
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            );
+                              (BuildContext context, days, focusedDay) {
+                            return SelectedBuilderWidget(
+                                days: days,
+                                dateList: dateList,
+                                reserveNotifierList: reserveNotifierList);
+                          },
+                          todayBuilder: (BuildContext context, days, focusedDay) {
+                            return TodayBuilderWidget(
+                                days: days,
+                                dateList: dateList,
+                                reserveNotifierList: reserveNotifierList);
                           },
                         ),
                         focusedDay: _focusedDay,
-                        firstDay: DateTime(2020, 1, 1),
+                        firstDay: DateTime(2021, 10, 1),
                         lastDay: DateTime(2080, 3, 31),
                         selectedDayPredicate: (day) {
                           return isSameDay(_selectedDay, day);
@@ -183,14 +135,6 @@ class CalendarPage extends HookConsumerWidget {
                               ],
                             ),
                           ),
-                        ),
-                        calendarStyle: CalendarStyle(
-                          todayDecoration: BoxDecoration(
-                              color: Colors.red.shade200,
-                              shape: BoxShape.circle),
-                          // selectedDecoration: BoxDecoration(
-                          //     color: Colors.red.shade500,
-                          //     shape: BoxShape.circle),
                         ),
                       ),
                     ),
