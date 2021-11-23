@@ -44,10 +44,6 @@ class CalendarPage extends HookConsumerWidget {
                 child: CircularProgressIndicator(
                     color: Theme.of(context).primaryColor),
               );
-            } else if (snapshot.data!.docs.isEmpty) {
-              return const Center(
-                child: SizedBox(),
-              );
             } else {
               final reservation =
                   snapshot.data!.docs.map((e) => Reservation(e));
@@ -93,7 +89,7 @@ class CalendarPage extends HookConsumerWidget {
                           },
                         ),
                         focusedDay: _focusedDay,
-                        firstDay: DateTime(2021, 1, 1),
+                        firstDay: DateTime(2021, 10, 1),
                         lastDay: DateTime(2080, 3, 31),
                         selectedDayPredicate: (day) {
                           return isSameDay(_selectedDay, day);
