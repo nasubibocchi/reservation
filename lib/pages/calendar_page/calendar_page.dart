@@ -7,6 +7,7 @@ import 'package:reservation/entities/reservation.dart';
 import 'package:reservation/pages/calendar_page/selected_day/select_day_provider.dart';
 import 'package:reservation/pages/calendar_page/widgets/default_builder_widget.dart';
 import 'package:reservation/pages/calendar_page/widgets/selected_builder_widget.dart';
+import 'package:reservation/pages/calendar_page/widgets/today_builder_widget.dart';
 import 'package:reservation/pages/reserve_page/reserve_page.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -84,6 +85,12 @@ class CalendarPage extends HookConsumerWidget {
                                 dateList: dateList,
                                 reserveNotifierList: reserveNotifierList);
                           },
+                          todayBuilder: (BuildContext context, days, focusedDay) {
+                            return TodayBuilderWidget(
+                                days: days,
+                                dateList: dateList,
+                                reserveNotifierList: reserveNotifierList);
+                          },
                         ),
                         focusedDay: _focusedDay,
                         firstDay: DateTime(2021, 1, 1),
@@ -132,11 +139,6 @@ class CalendarPage extends HookConsumerWidget {
                               ],
                             ),
                           ),
-                        ),
-                        calendarStyle: CalendarStyle(
-                          todayDecoration: BoxDecoration(
-                              color: Colors.red.shade200,
-                              shape: BoxShape.circle),
                         ),
                       ),
                     ),
